@@ -9,5 +9,7 @@ This code implements a training algorithm for a GNN of GraspNet Graspability fea
 
 # For Inference
 4. Once Weights are saved Call:
-positions,scores,offsets=GraphNet.load(./PathToData.npz), GraphNet.makeGraph(positions,scores,offsets),
+label_data=load("./PathToData.npz"),
+positions,scores,offsets=GraphNet.sampleIndexes(label_data,label_data['collision'].shape,k),
+GraphNet.makeGraph(positions,scores,offsets),
 pred=GraphNet.forward()

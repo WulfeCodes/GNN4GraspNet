@@ -1,18 +1,9 @@
 ##  GNN
 This code implements a training algorithm for a GNN of GraspNet Graspability features for manipulators of object point cloud data
 
-# To Train and save: 
-1.simply create a parent folder, download zShotGraspGNN.py,requirements.txt,and https://drive.google.com/file/d/1FCV6j2J2eQpVk_ddJXljJvjRT1KU3sJ6/view
-
 2. pip install -r requirements.txt
 3. run program :)
 
-# For Inference
-4. Once Weights are saved Call:
-label_data=load("./PathToData.npz"),
+#Minimal Training and Inference run: 
+<img width="1123" height="287" alt="image" src="https://github.com/user-attachments/assets/bbf256d6-8c3c-4f1a-a473-b7d6abed62ce" />
 
-positions,scores,offsets=GraphNet.sampleIndexes(label_data,label_data['collision'].shape,k),
-
-GraphNet.makeGraph(positions,scores,offsets),
-
-pred=GraphNet.forward()

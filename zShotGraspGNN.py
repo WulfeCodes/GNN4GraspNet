@@ -37,7 +37,7 @@ class EdgeConvNet(nn.Module):
         self.conv2 = EdgeConv(nn2)
         self.lin = Linear(64, 1)  # Output grasp quality scalar per node
         self.optimizer = optim.ASGD(self.parameters(),lr=1e-4)
-    
+        self.lossList = []
     def visualize(self,preds):
 
         positions = self.data.pos.cpu().numpy()   # shape: [N, 3]
@@ -118,8 +118,9 @@ class EdgeConvNet(nn.Module):
         loss=F.mse_loss(out,self.data.y)
         loss.backward()
         self.optimizer.step()
-        total_loss += loss.item() * self.data.num_nodes
+        total_loss += loss.item()
         print("finished training:",total_loss)
+        self.lossList.append(total_loss)
 
     def save_weights(self, path="./edgeconv_weights.pth"):
         torch.save(self.state_dict(), path)
@@ -206,6 +207,31 @@ class EdgeConvNet(nn.Module):
                 self.makeGraph(positions,offsets,scores)
                 self.train()
             self.save_weights()
+        self.plot_loss()
+
+    def plot_loss(self):
+        """
+        Plot the training loss curve from self.lossList
+        """
+        plt.figure(figsize=(10, 6))
+        plt.plot(self.lossList, 'b-', linewidth=1.5, alpha=0.8)
+        plt.title('Training Loss Over Time', fontsize=14, fontweight='bold')
+        plt.xlabel('Epoch/Iteration', fontsize=12)
+        plt.ylabel('Loss', fontsize=12)
+        plt.grid(True, alpha=0.3)
+        
+        # Add some styling
+        plt.tight_layout()
+        
+        # Optional: Add moving average for smoother visualization
+        if len(self.lossList) > 10:
+            window_size = min(50, len(self.lossList) // 10)
+            moving_avg = np.convolve(self.lossList, np.ones(window_size)/window_size, mode='valid')
+            x_avg = np.arange(window_size-1, len(self.lossList))
+            plt.plot(x_avg, moving_avg, 'r--', linewidth=2, alpha=0.7, label=f'Moving Avg (window={window_size})')
+            plt.legend()
+        
+        plt.show()
         
     def inferenceWithVisualization(self,path):
         label_data = load(path)

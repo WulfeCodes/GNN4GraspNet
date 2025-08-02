@@ -14,4 +14,6 @@ This code implements a training algorithm for a GNN of GraspNet Graspability fea
 #### train4Epochs isn't required if you'd like to just run inference
 train4Epochs includes augmented data generation with minimal noise, translation, and rotation btw
 <img width="1123" height="287" alt="image" src="https://github.com/user-attachments/assets/bbf256d6-8c3c-4f1a-a473-b7d6abed62ce" />
+<img width="509" height="475" alt="image" src="https://github.com/user-attachments/assets/78f5cb6e-2b0e-4b95-a210-32fbda968020" />
+
 
